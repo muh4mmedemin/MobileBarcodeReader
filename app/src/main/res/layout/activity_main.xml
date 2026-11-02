@@ -12,6 +12,7 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <!-- Bolumler: yeni bolum icin buraya RadioButton eklemek yeterli (yazisi kayda gecer) -->
     <RadioGroup
         android:id="@+id/bolumGrubu"
         android:layout_width="match_parent"
@@ -19,12 +20,12 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/bolumKesme"
+            android:id="@+id/bolumCnc"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Kesme"
-            android:textSize="20sp" />
+            android:text="CNC"
+            android:textSize="18sp" />
 
         <RadioButton
             android:id="@+id/bolumFreze"
@@ -32,7 +33,23 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Freze"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/bolumKesme"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Kesme"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/bolumOfis"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Ofis"
+            android:textSize="18sp" />
     </RadioGroup>
 
     <Button

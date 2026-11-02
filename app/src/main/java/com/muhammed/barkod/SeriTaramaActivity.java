@@ -67,7 +67,7 @@ public class SeriTaramaActivity extends Activity {
 
         bolum = getIntent().getStringExtra(EXTRA_BOLUM);
         if (bolum == null) {
-            bolum = "Kesme";
+            bolum = "CNC";
         }
 
         barkodView = findViewById(R.id.barkodView);

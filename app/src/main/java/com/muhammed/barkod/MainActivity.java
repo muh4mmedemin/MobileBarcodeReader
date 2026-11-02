@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,8 +47,15 @@ public class MainActivity extends Activity {
         kayitlarView = findViewById(R.id.kayitlar);
         TextView dosyaYoluView = findViewById(R.id.dosyaYolu);
 
-        String kayitliBolum = prefs.getString("bolum", "Kesme");
-        bolumGrubu.check("Freze".equals(kayitliBolum) ? R.id.bolumFreze : R.id.bolumKesme);
+        String kayitliBolum = prefs.getString("bolum", "CNC");
+        int secilecek = R.id.bolumCnc;
+        for (int i = 0; i < bolumGrubu.getChildCount(); i++) {
+            View v = bolumGrubu.getChildAt(i);
+            if (v instanceof RadioButton && ((RadioButton) v).getText().toString().equals(kayitliBolum)) {
+                secilecek = v.getId();
+            }
+        }
+        bolumGrubu.check(secilecek);
         bolumGrubu.setOnCheckedChangeListener((g, id) ->
                 prefs.edit().putString("bolum", seciliBolum()).apply());
 
@@ -84,7 +93,8 @@ public class MainActivity extends Activity {
     }
 
     private String seciliBolum() {
-        return bolumGrubu.getCheckedRadioButtonId() == R.id.bolumFreze ? "Freze" : "Kesme";
+        RadioButton secili = findViewById(bolumGrubu.getCheckedRadioButtonId());
+        return secili != null ? secili.getText().toString() : "CNC";
     }
 
     private void taramaBaslat() {
