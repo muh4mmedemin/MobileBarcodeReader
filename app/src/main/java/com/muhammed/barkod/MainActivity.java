@@ -30,7 +30,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HataKaydi.kur(this);
         setContentView(R.layout.activity_main);
+        try {
+            String surum = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            setTitle("Barkod Okuyucu  v" + surum);
+        } catch (Exception ignored) {
+        }
+        HataKaydi.varsaGoster(this);
 
         prefs = getSharedPreferences("ayarlar", MODE_PRIVATE);
         bolumGrubu = findViewById(R.id.bolumGrubu);

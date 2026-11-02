@@ -50,7 +50,12 @@ public class SeriTaramaActivity extends Activity {
             }
             sonBarkod = barkod;
             sonZaman = simdi;
-            barkodKaydet(barkod);
+            try {
+                barkodKaydet(barkod);
+            } catch (Throwable t) {
+                HataKaydi.yaz(SeriTaramaActivity.this, t);
+                durumView.setText("HATA: " + t);
+            }
         }
     };
 
@@ -85,7 +90,11 @@ public class SeriTaramaActivity extends Activity {
         try {
             String hata = KayitDeposu.kaydet(this, bolum, barkod);
             buOturumdaSayi++;
-            beepManager.playBeepSoundAndVibrate();
+            try {
+                beepManager.playBeepSoundAndVibrate();
+            } catch (Throwable t) {
+                HataKaydi.yaz(this, t);
+            }
             durumView.setBackgroundColor(Color.argb(200, 0, 120, 0));
             String metin = "✔ " + barkod + "\nBölüm: " + bolum + "   Okunan: " + buOturumdaSayi;
             if (hata != null) {
