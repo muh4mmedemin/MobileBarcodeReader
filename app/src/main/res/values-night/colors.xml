@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="zemin">#10151B</color>
+    <color name="yuzey">#1A2129</color>
+    <color name="metin">#E6EBF0</color>
+    <color name="soluk">#9AA5B1</color>
+    <color name="cizgi">#2E3844</color>
+    <color name="vurgu">#6AA3EE</color>
+    <color name="vurgu_koyu">#0D1116</color>
+    <color name="basari">#4ADE80</color>
+    <color name="hata">#F87171</color>
+
+    <color name="bolum_cnc">#6AA3EE</color>
+    <color name="bolum_freze">#F59158</color>
+    <color name="bolum_kesme">#34B9A9</color>
+    <color name="bolum_ofis">#AE92E3</color>
+    <color name="bolum_uzeri">#0D1116</color>
+</resources>

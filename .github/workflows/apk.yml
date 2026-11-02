@@ -37,19 +37,32 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: gradle assembleDebug --no-daemon
 
+      - name: Surumu oku
+        id: surum
+        run: |
+          SURUM=$(grep -oP "versionName\s+'\K[^']+" app/build.gradle)
+          echo "ad=$SURUM" >> "$GITHUB_OUTPUT"
+          echo "Surum: $SURUM"
+
       - name: APK dosyasini adlandir
         run: cp app/build/outputs/apk/debug/app-debug.apk BarkodOkuyucu.apk
 
       - uses: actions/upload-artifact@v4
         with:
-          name: BarkodOkuyucu-apk
+          name: BarkodOkuyucu-v${{ steps.surum.outputs.ad }}
           path: BarkodOkuyucu.apk
 
-      - name: Release olarak yayinla
+      # Her surum kendi release'inde saklanir (v1.6, v1.7 ...). En yenisi "Latest" olur;
+      # her zaman en yeni APK: https://github.com/<repo>/releases/latest/download/BarkodOkuyucu.apk
+      - name: Surum olarak yayinla
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: apk-son
-          name: Barkod Okuyucu APK
-          body: Telefona indirmek icin BarkodOkuyucu.apk dosyasina dokunun.
+          tag_name: v${{ steps.surum.outputs.ad }}
+          target_commitish: ${{ github.sha }}
+          name: Barkod Okuyucu v${{ steps.surum.outputs.ad }}
+          body: |
+            Telefona indirmek icin asagidaki BarkodOkuyucu.apk dosyasina dokunun.
+            Commit: ${{ github.sha }}
           files: BarkodOkuyucu.apk
+          overwrite_files: true
           make_latest: true

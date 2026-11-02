@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Tema" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/vurgu</item>
+        <item name="android:colorPrimaryDark">@color/vurgu_koyu</item>
+        <item name="android:colorAccent">@color/vurgu</item>
+        <item name="android:windowBackground">@color/zemin</item>
+        <item name="android:textColorPrimary">@color/metin</item>
+        <item name="android:textColorSecondary">@color/soluk</item>
+    </style>
+
+    <style name="Tema.Tarama" parent="android:Theme.Material.NoActionBar.Fullscreen">
+        <item name="android:colorAccent">@color/vurgu</item>
+    </style>
+
+    <!-- Kucuk buyuk harf etiket -->
+    <style name="Etiket">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textColor">@color/soluk</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+</resources>

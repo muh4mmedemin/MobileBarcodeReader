@@ -13,7 +13,14 @@ import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -56,8 +63,16 @@ public class MainActivity extends Activity {
             }
         }
         bolumGrubu.check(secilecek);
-        bolumGrubu.setOnCheckedChangeListener((g, id) ->
-                prefs.edit().putString("bolum", seciliBolum()).apply());
+        bolumGrubu.setOnCheckedChangeListener((g, id) -> {
+            prefs.edit().putString("bolum", seciliBolum()).apply();
+            gorunumuGuncelle();
+        });
+
+        Tasarim.yuzey(findViewById(R.id.elleKutu));
+        Tasarim.yuzey(findViewById(R.id.kayitKutu));
+        Tasarim.ikincil(findViewById(R.id.btnPaylas));
+        Tasarim.ikincil(findViewById(R.id.btnSonuSil));
+        gorunumuGuncelle();
 
         findViewById(R.id.btnTara).setOnClickListener(v -> taramaBaslat());
         findViewById(R.id.btnKaydet).setOnClickListener(v -> elleKaydet());
@@ -83,13 +98,35 @@ public class MainActivity extends Activity {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
 
-        dosyaYoluView.setText("Dosya: İndirilenler (Download) / " + KayitDeposu.DOSYA_ADI);
+        dosyaYoluView.setText("Kayıt dosyası: İndirilenler / " + KayitDeposu.DOSYA_ADI);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         listeyiGuncelle(); // seri taramadan donunce listeyi yenile
+    }
+
+    /** Bolum butonlarini, tarama butonunu ve Kaydet butonunu secili bolumun rengine boyar. */
+    private void gorunumuGuncelle() {
+        int seciliId = bolumGrubu.getCheckedRadioButtonId();
+        for (int i = 0; i < bolumGrubu.getChildCount(); i++) {
+            View v = bolumGrubu.getChildAt(i);
+            if (v instanceof RadioButton) {
+                RadioButton r = (RadioButton) v;
+                Tasarim.bolumSegmenti(r, r.getText().toString(), r.getId() == seciliId);
+            }
+        }
+        String bolum = seciliBolum();
+        int renk = Tasarim.bolumRengi(this, bolum);
+        Button tara = findViewById(R.id.btnTara);
+        Tasarim.birincil(tara, renk);
+        SpannableString metin = new SpannableString("Seri taramayı başlat\n" + bolum);
+        int ayrim = metin.toString().indexOf('\n');
+        metin.setSpan(new RelativeSizeSpan(0.7f), 0, ayrim, 0);
+        metin.setSpan(new RelativeSizeSpan(1.3f), ayrim + 1, metin.length(), 0);
+        tara.setText(metin);
+        Tasarim.birincil(findViewById(R.id.btnKaydet), renk);
     }
 
     private String seciliBolum() {
@@ -127,13 +164,32 @@ public class MainActivity extends Activity {
     private void listeyiGuncelle() {
         List<String> satirlar = KayitDeposu.satirlariOku(this);
         int kayitSayisi = Math.max(0, satirlar.size() - 1); // baslik haric
-        StringBuilder sb = new StringBuilder();
-        sb.append("Toplam kayıt: ").append(kayitSayisi).append("\n\n");
+        ((TextView) findViewById(R.id.kayitSayisi)).setText("TOPLAM " + kayitSayisi);
+        if (kayitSayisi == 0) {
+            kayitlarView.setTextColor(getColor(R.color.soluk));
+            kayitlarView.setText("Henüz kayıt yok. Bölümü seçip seri taramayı başlatın.");
+            return;
+        }
+        kayitlarView.setTextColor(getColor(R.color.metin));
+        SpannableStringBuilder sb = new SpannableStringBuilder();
         int sinir = 0;
         for (int i = satirlar.size() - 1; i >= 1 && sinir < 100; i--, sinir++) {
-            sb.append(satirlar.get(i).replace(";", "  ")).append("\n");
+            String[] p = satirlar.get(i).split(";", 4);
+            if (p.length < 4) {
+                sb.append(satirlar.get(i)).append("\n");
+                continue;
+            }
+            String tarih = p[0].length() >= 5 ? p[0].substring(0, 5) : p[0]; // gg.aa
+            int bas = sb.length();
+            sb.append(tarih).append(' ').append(p[1]).append("  ");
+            sb.setSpan(new ForegroundColorSpan(getColor(R.color.soluk)), bas, sb.length(), 0);
+            bas = sb.length();
+            sb.append(String.format(java.util.Locale.ROOT, "%-6s", p[2]));
+            sb.setSpan(new ForegroundColorSpan(Tasarim.bolumRengi(this, p[2])), bas, sb.length(), 0);
+            sb.setSpan(new StyleSpan(Typeface.BOLD), bas, sb.length(), 0);
+            sb.append(' ').append(p[3]).append("\n");
         }
-        kayitlarView.setText(sb.toString());
+        kayitlarView.setText(sb);
     }
 
     private void sonKaydiSilSor() {

@@ -10,8 +10,8 @@ android {
         applicationId 'com.muhammed.barkod'
         minSdk 26
         targetSdk 34
-        versionCode 6
-        versionName '1.5'
+        versionCode 7
+        versionName '1.6'
     }
 
     // Sabit imza: GitHub Actions, KEYSTORE_BASE64 secret'indan app/barkod.keystore dosyasini olusturur.

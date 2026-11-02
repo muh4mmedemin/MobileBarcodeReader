@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Tema" parent="android:Theme.Material">
+        <item name="android:colorPrimary">@color/yuzey</item>
+        <item name="android:colorPrimaryDark">@color/vurgu_koyu</item>
+        <item name="android:colorAccent">@color/vurgu</item>
+        <item name="android:windowBackground">@color/zemin</item>
+        <item name="android:textColorPrimary">@color/metin</item>
+        <item name="android:textColorSecondary">@color/soluk</item>
+    </style>
+</resources>

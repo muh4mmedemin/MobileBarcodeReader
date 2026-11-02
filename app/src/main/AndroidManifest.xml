@@ -9,7 +9,7 @@
 
     <application
         android:label="Barkod Okuyucu"
-        android:theme="@android:style/Theme.Material.Light.DarkActionBar"
+        android:theme="@style/Tema"
         android:hardwareAccelerated="true">
 
         <activity
@@ -25,6 +25,6 @@
         <activity
             android:name=".SeriTaramaActivity"
             android:exported="false"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
+            android:theme="@style/Tema.Tarama" />
     </application>
 </manifest>

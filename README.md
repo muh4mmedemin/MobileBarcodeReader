@@ -2,7 +2,9 @@
 
 Barkodları kamera ile okur, seçilen bölümle (CNC / Freze / Kesme / Ofis) birlikte CSV dosyasına kaydeder.
 
-- **APK indirme:** GitHub'da *Releases → Barkod Okuyucu APK → BarkodOkuyucu.apk*
+- **En yeni APK:** https://github.com/muh4mmedemin/Tek-Seferlik-Proje/releases/latest/download/BarkodOkuyucu.apk
+- **Eski sürümler:** GitHub *Releases* sayfasında her sürüm (v1.5, v1.6, ...) ayrı durur.
+- Yeni sürüm çıkarmak için `app/build.gradle` içindeki `versionCode` ve `versionName` artırılır.
 - **Kayıt dosyası:** Telefonda `İndirilenler/barkod_kayitlari.csv`
   (yedek: `Android/data/com.muhammed.barkod/files/barkod_kayitlari.csv`)
 - Format: `Tarih;Saat;Bolum;Barkod` (Excel'de doğrudan açılır)

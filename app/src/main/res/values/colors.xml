@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Atolye paneli: soguk gri zemin, celik mavisi vurgu, her bolumun kendi rengi -->
+<resources>
+    <color name="zemin">#F2F4F7</color>
+    <color name="yuzey">#FFFFFF</color>
+    <color name="metin">#1B222B</color>
+    <color name="soluk">#5D6773</color>
+    <color name="cizgi">#D3DAE2</color>
+    <color name="vurgu">#1F5FAE</color>
+    <color name="vurgu_koyu">#174A88</color>
+    <color name="basari">#15803D</color>
+    <color name="hata">#B91C1C</color>
+
+    <!-- Bolum renkleri ve uzerindeki yazi rengi -->
+    <color name="bolum_cnc">#1F5FAE</color>
+    <color name="bolum_freze">#C2410C</color>
+    <color name="bolum_kesme">#0F766E</color>
+    <color name="bolum_ofis">#6D4AA8</color>
+    <color name="bolum_uzeri">#FFFFFF</color>
+</resources>
