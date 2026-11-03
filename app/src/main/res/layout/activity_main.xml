@@ -46,7 +46,17 @@
                 android:layout_weight="1"
                 android:minWidth="0dp"
                 android:stateListAnimator="@null"
-                android:text="Freze"
+                android:text="FREZE"
+                android:textAllCaps="false" />
+            <Button
+                android:id="@+id/bolumDizayn"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:minWidth="0dp"
+                android:stateListAnimator="@null"
+                android:text="DİZAYN"
                 android:textAllCaps="false" />
             <Button
                 android:id="@+id/bolumKesme"
@@ -56,17 +66,7 @@
                 android:layout_weight="1"
                 android:minWidth="0dp"
                 android:stateListAnimator="@null"
-                android:text="Kesme"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/bolumOfis"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                android:minWidth="0dp"
-                android:stateListAnimator="@null"
-                android:text="Ofis"
+                android:text="KESME"
                 android:textAllCaps="false" />
         </LinearLayout>
 
@@ -77,33 +77,33 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/bolumElektrik"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_weight="1"
-                android:minWidth="0dp"
-                android:stateListAnimator="@null"
-                android:text="Elektrik"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/bolum3d"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                android:minWidth="0dp"
-                android:stateListAnimator="@null"
-                android:text="3D Baskı"
-                android:textAllCaps="false" />
-            <Button
                 android:id="@+id/bolumSonKontrol"
                 android:layout_width="0dp"
                 android:layout_height="52dp"
+                android:layout_weight="1"
+                android:minWidth="0dp"
+                android:stateListAnimator="@null"
+                android:text="SON KONTROL"
+                android:textAllCaps="false" />
+            <Button
+                android:id="@+id/bolumAraKontrol"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:minWidth="0dp"
                 android:stateListAnimator="@null"
-                android:text="Son Kontrol"
+                android:text="ARA KONTROL"
+                android:textAllCaps="false" />
+            <Button
+                android:id="@+id/bolumElektrik"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:minWidth="0dp"
+                android:stateListAnimator="@null"
+                android:text="ELEKTRİK"
                 android:textAllCaps="false" />
         </LinearLayout>
     </LinearLayout>

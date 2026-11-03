@@ -62,7 +62,9 @@ public class MainActivity extends Activity {
         seciliBolumAdi = bolumButonlari.get(0).getText().toString();
         for (Button b : bolumButonlari) {
             String ad = b.getText().toString();
-            if (ad.equals(kayitliBolum)) {
+            // eski surumlerde kaydedilen "Freze" gibi adlar da eslessin
+            if (ad.equalsIgnoreCase(kayitliBolum)
+                    || ad.equals(kayitliBolum.toUpperCase(new java.util.Locale("tr", "TR")))) {
                 seciliBolumAdi = ad;
             }
             b.setOnClickListener(v -> {

@@ -1,6 +1,6 @@
 # Barkod Okuyucu (Android)
 
-Barkodları kamera ile okur, seçilen bölümle (CNC / Freze / Kesme / Ofis / Elektrik / 3D Baskı / Son Kontrol) birlikte CSV dosyasına kaydeder.
+Barkodları kamera ile okur, seçilen bölümle (CNC / FREZE / DİZAYN / KESME / SON KONTROL / ARA KONTROL / ELEKTRİK) birlikte CSV dosyasına kaydeder.
 
 - **En yeni APK:** https://github.com/muh4mmedemin/Tek-Seferlik-Proje/releases/latest/download/BarkodOkuyucu.apk
 - **Eski sürümler:** GitHub *Releases* sayfasında her sürüm (v1.5, v1.6, ...) ayrı durur.

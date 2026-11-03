@@ -25,19 +25,20 @@ public final class Tasarim {
     }
 
     public static int bolumRengi(Context c, String bolum) {
-        switch (bolum) {
-            case "Freze":
+        String ad = bolum == null ? "" : bolum.trim().toUpperCase(new java.util.Locale("tr", "TR"));
+        switch (ad) {
+            case "FREZE":
                 return renk(c, R.color.bolum_freze);
-            case "Kesme":
+            case "DİZAYN":
+                return renk(c, R.color.bolum_dizayn);
+            case "KESME":
                 return renk(c, R.color.bolum_kesme);
-            case "Ofis":
-                return renk(c, R.color.bolum_ofis);
-            case "Elektrik":
-                return renk(c, R.color.bolum_elektrik);
-            case "3D Baskı":
-                return renk(c, R.color.bolum_3d);
-            case "Son Kontrol":
+            case "SON KONTROL":
                 return renk(c, R.color.bolum_son_kontrol);
+            case "ARA KONTROL":
+                return renk(c, R.color.bolum_ara_kontrol);
+            case "ELEKTRİK":
+                return renk(c, R.color.bolum_elektrik);
             case "CNC":
             default:
                 return renk(c, R.color.bolum_cnc);
@@ -83,7 +84,7 @@ public final class Tasarim {
         Context c = r.getContext();
         int renk = bolumRengi(c, bolum);
         r.setGravity(Gravity.CENTER);
-        r.setTextSize(15);
+        r.setTextSize(14);
         r.setPadding(0, 0, 0, 0);
         r.setTypeface(null, secili ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
         if (secili) {

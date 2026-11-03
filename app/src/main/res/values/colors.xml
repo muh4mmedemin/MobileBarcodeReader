@@ -15,9 +15,9 @@
     <color name="bolum_cnc">#1F5FAE</color>
     <color name="bolum_freze">#C2410C</color>
     <color name="bolum_kesme">#0F766E</color>
-    <color name="bolum_ofis">#6D4AA8</color>
+    <color name="bolum_dizayn">#6D4AA8</color>
     <color name="bolum_elektrik">#B45309</color>
-    <color name="bolum_3d">#BE185D</color>
+    <color name="bolum_ara_kontrol">#BE185D</color>
     <color name="bolum_son_kontrol">#475569</color>
     <color name="bolum_uzeri">#FFFFFF</color>
 </resources>
