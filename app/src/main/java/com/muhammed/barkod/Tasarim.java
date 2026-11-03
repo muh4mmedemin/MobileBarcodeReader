@@ -9,7 +9,6 @@ import android.graphics.drawable.RippleDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 
 /** Renkler (res/values/colors.xml) uzerinden ortak buton / kutu gorunumleri. */
 public final class Tasarim {
@@ -33,6 +32,12 @@ public final class Tasarim {
                 return renk(c, R.color.bolum_kesme);
             case "Ofis":
                 return renk(c, R.color.bolum_ofis);
+            case "Elektrik":
+                return renk(c, R.color.bolum_elektrik);
+            case "3D Baskı":
+                return renk(c, R.color.bolum_3d);
+            case "Son Kontrol":
+                return renk(c, R.color.bolum_son_kontrol);
             case "CNC":
             default:
                 return renk(c, R.color.bolum_cnc);
@@ -74,12 +79,11 @@ public final class Tasarim {
     }
 
     /** Bolum secim butonu: seciliyse bolum renginde dolu, degilse cerceveli. */
-    public static void bolumSegmenti(RadioButton r, String bolum, boolean secili) {
+    public static void bolumSegmenti(Button r, String bolum, boolean secili) {
         Context c = r.getContext();
         int renk = bolumRengi(c, bolum);
-        r.setButtonDrawable(null);
         r.setGravity(Gravity.CENTER);
-        r.setTextSize(16);
+        r.setTextSize(15);
         r.setPadding(0, 0, 0, 0);
         r.setTypeface(null, secili ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
         if (secili) {

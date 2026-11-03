@@ -21,8 +21,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +31,9 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     private SharedPreferences prefs;
-    private RadioGroup bolumGrubu;
+    /** Bolum butonlari (yazilari bolum adidir). */
+    private final java.util.List<Button> bolumButonlari = new java.util.ArrayList<>();
+    private String seciliBolumAdi;
     private EditText elleGiris;
     private TextView kayitlarView;
     private TextView dosyaYoluView;
@@ -52,24 +53,24 @@ public class MainActivity extends Activity {
         HataKaydi.varsaGoster(this);
 
         prefs = getSharedPreferences("ayarlar", MODE_PRIVATE);
-        bolumGrubu = findViewById(R.id.bolumGrubu);
+        butonlariTopla(findViewById(R.id.bolumGrubu));
         elleGiris = findViewById(R.id.elleGiris);
         kayitlarView = findViewById(R.id.kayitlar);
         dosyaYoluView = findViewById(R.id.dosyaYolu);
 
         String kayitliBolum = prefs.getString("bolum", "CNC");
-        int secilecek = R.id.bolumCnc;
-        for (int i = 0; i < bolumGrubu.getChildCount(); i++) {
-            View v = bolumGrubu.getChildAt(i);
-            if (v instanceof RadioButton && ((RadioButton) v).getText().toString().equals(kayitliBolum)) {
-                secilecek = v.getId();
+        seciliBolumAdi = bolumButonlari.get(0).getText().toString();
+        for (Button b : bolumButonlari) {
+            String ad = b.getText().toString();
+            if (ad.equals(kayitliBolum)) {
+                seciliBolumAdi = ad;
             }
+            b.setOnClickListener(v -> {
+                seciliBolumAdi = ad;
+                prefs.edit().putString("bolum", ad).apply();
+                gorunumuGuncelle();
+            });
         }
-        bolumGrubu.check(secilecek);
-        bolumGrubu.setOnCheckedChangeListener((g, id) -> {
-            prefs.edit().putString("bolum", seciliBolum()).apply();
-            gorunumuGuncelle();
-        });
 
         Tasarim.yuzey(findViewById(R.id.elleKutu));
         Tasarim.yuzey(findViewById(R.id.kayitKutu));
@@ -174,13 +175,9 @@ public class MainActivity extends Activity {
 
     /** Bolum butonlarini, tarama butonunu ve Kaydet butonunu secili bolumun rengine boyar. */
     private void gorunumuGuncelle() {
-        int seciliId = bolumGrubu.getCheckedRadioButtonId();
-        for (int i = 0; i < bolumGrubu.getChildCount(); i++) {
-            View v = bolumGrubu.getChildAt(i);
-            if (v instanceof RadioButton) {
-                RadioButton r = (RadioButton) v;
-                Tasarim.bolumSegmenti(r, r.getText().toString(), r.getId() == seciliId);
-            }
+        for (Button r : bolumButonlari) {
+            String ad = r.getText().toString();
+            Tasarim.bolumSegmenti(r, ad, ad.equals(seciliBolumAdi));
         }
         String bolum = seciliBolum();
         int renk = Tasarim.bolumRengi(this, bolum);
@@ -195,8 +192,18 @@ public class MainActivity extends Activity {
     }
 
     private String seciliBolum() {
-        RadioButton secili = findViewById(bolumGrubu.getCheckedRadioButtonId());
-        return secili != null ? secili.getText().toString() : "CNC";
+        return seciliBolumAdi;
+    }
+
+    private void butonlariTopla(ViewGroup grup) {
+        for (int i = 0; i < grup.getChildCount(); i++) {
+            View v = grup.getChildAt(i);
+            if (v instanceof Button) {
+                bolumButonlari.add((Button) v);
+            } else if (v instanceof ViewGroup) {
+                butonlariTopla((ViewGroup) v);
+            }
+        }
     }
 
     private void taramaBaslat() {
@@ -249,7 +256,7 @@ public class MainActivity extends Activity {
             sb.append(tarih).append(' ').append(p[1]).append("  ");
             sb.setSpan(new ForegroundColorSpan(getColor(R.color.soluk)), bas, sb.length(), 0);
             bas = sb.length();
-            sb.append(String.format(java.util.Locale.ROOT, "%-6s", p[2]));
+            sb.append(String.format(java.util.Locale.ROOT, "%-11s", p[2]));
             sb.setSpan(new ForegroundColorSpan(Tasarim.bolumRengi(this, p[2])), bas, sb.length(), 0);
             sb.setSpan(new StyleSpan(Typeface.BOLD), bas, sb.length(), 0);
             sb.append(' ').append(p[3]).append("\n");
