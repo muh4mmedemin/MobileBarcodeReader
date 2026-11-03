@@ -164,7 +164,7 @@ public class SeriTaramaActivity extends Activity {
             }
             String metin = "✔  " + barkod;
             if (hata != null) {
-                metin += "\nİndirilenler kopyası güncellenemedi: " + hata;
+                metin += "\nUyarı: " + hata;
             }
             durumGoster(metin, R.color.basari);
         } catch (Exception e) {

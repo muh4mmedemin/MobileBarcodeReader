@@ -35,6 +35,9 @@ public class MainActivity extends Activity {
     private RadioGroup bolumGrubu;
     private EditText elleGiris;
     private TextView kayitlarView;
+    private TextView dosyaYoluView;
+    private static final int DOSYA_SEC = 20;
+    private static final int DOSYA_OLUSTUR = 21;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class MainActivity extends Activity {
         bolumGrubu = findViewById(R.id.bolumGrubu);
         elleGiris = findViewById(R.id.elleGiris);
         kayitlarView = findViewById(R.id.kayitlar);
-        TextView dosyaYoluView = findViewById(R.id.dosyaYolu);
+        dosyaYoluView = findViewById(R.id.dosyaYolu);
 
         String kayitliBolum = prefs.getString("bolum", "CNC");
         int secilecek = R.id.bolumCnc;
@@ -92,18 +95,80 @@ public class MainActivity extends Activity {
         findViewById(R.id.btnPaylas).setOnClickListener(v -> dosyayiPaylas());
         findViewById(R.id.btnSonuSil).setOnClickListener(v -> sonKaydiSilSor());
 
+        Tasarim.ikincil(findViewById(R.id.btnDosyaSec));
+        Tasarim.ikincil(findViewById(R.id.btnYeniDosya));
+        Tasarim.ikincil(findViewById(R.id.btnOtomatik));
+        findViewById(R.id.btnDosyaSec).setOnClickListener(v -> dosyaSec());
+        findViewById(R.id.btnYeniDosya).setOnClickListener(v -> yeniDosya());
+        findViewById(R.id.btnOtomatik).setOnClickListener(v -> {
+            KayitDeposu.seciliDosyaKaldir(this);
+            Toast.makeText(this, "Otomatik dosyaya dönüldü", Toast.LENGTH_SHORT).show();
+            dosyaBilgisiniGuncelle();
+            listeyiGuncelle();
+        });
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
                 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
 
-        dosyaYoluView.setText("Kayıt dosyası: İndirilenler / " + KayitDeposu.DOSYA_ADI);
+    }
+
+    private void dosyaBilgisiniGuncelle() {
+        dosyaYoluView.setText(KayitDeposu.dosyaAdi(this));
+        View otomatik = findViewById(R.id.btnOtomatik);
+        boolean secili = KayitDeposu.seciliUri(this) != null;
+        otomatik.setEnabled(secili);
+        otomatik.setAlpha(secili ? 1f : 0.4f);
+    }
+
+    /** Var olan bir dosyayi sec: kayitlar o dosyanin sonuna eklenir. */
+    private void dosyaSec() {
+        Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("*/*");
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        startActivityForResult(i, DOSYA_SEC);
+    }
+
+    /** Istenen yerde yeni bir CSV dosyasi olustur ve onu kullan. */
+    private void yeniDosya() {
+        Intent i = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("text/csv");
+        String gun = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.ROOT).format(new java.util.Date());
+        i.putExtra(Intent.EXTRA_TITLE, "barkod_" + gun + ".csv");
+        startActivityForResult(i, DOSYA_OLUSTUR);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode != DOSYA_SEC && requestCode != DOSYA_OLUSTUR)
+                || resultCode != RESULT_OK || data == null || data.getData() == null) {
+            return;
+        }
+        Uri uri = data.getData();
+        try {
+            getContentResolver().takePersistableUriPermission(uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } catch (Exception e) {
+            Toast.makeText(this, "Bu dosyaya kalıcı yazma izni alınamadı: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        KayitDeposu.seciliDosyaAta(this, uri);
+        Toast.makeText(this, "Kayıtlar bu dosyaya devam edecek", Toast.LENGTH_SHORT).show();
+        dosyaBilgisiniGuncelle();
+        listeyiGuncelle();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        dosyaBilgisiniGuncelle();
         listeyiGuncelle(); // seri taramadan donunce listeyi yenile
     }
 
@@ -151,7 +216,7 @@ public class MainActivity extends Activity {
             if (hata == null) {
                 Toast.makeText(this, "Kaydedildi: " + bolum + " - " + barkod, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Kaydedildi (uygulama klasörüne). İndirilenler hatası: " + hata,
+                Toast.makeText(this, "Kaydedildi. Uyarı: " + hata,
                         Toast.LENGTH_LONG).show();
             }
             elleGiris.setText("");
@@ -217,6 +282,15 @@ public class MainActivity extends Activity {
     }
 
     private void dosyayiPaylas() {
+        Uri secili = KayitDeposu.seciliUri(this);
+        if (secili != null) {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/csv");
+            i.putExtra(Intent.EXTRA_STREAM, secili);
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(i, "Barkod kayıtlarını paylaş"));
+            return;
+        }
         if (!KayitDeposu.anaDosya(this).exists()) {
             Toast.makeText(this, "Henüz kayıt yok", Toast.LENGTH_SHORT).show();
             return;
